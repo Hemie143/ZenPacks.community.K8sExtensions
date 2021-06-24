@@ -8,7 +8,7 @@ from ZenPacks.zenoss.PythonCollector.datasources.PythonDataSource import PythonD
 from twisted.internet.defer import inlineCallbacks, returnValue
 
 # Setup logging
-log = logging.getLogger('zen.K8sTest')
+log = logging.getLogger('zen.K8sExtensions')
 
 
 class Namespace(PythonDataSourcePlugin):

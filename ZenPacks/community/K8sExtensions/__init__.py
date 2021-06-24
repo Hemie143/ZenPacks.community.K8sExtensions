@@ -16,8 +16,7 @@ class ZenPack(schema.ZenPack):
     dp_name = 'podscount'
     gd_name = 'Pods Count'
 
-    def install(self, app):
-
+    def namespace_custom(self, app):
         log.info('Customizing K8sNamespace template')
         try:
             template = app.zport.dmd.Devices.Kubernetes.rrdTemplates.K8sNamespace
@@ -35,75 +34,23 @@ class ZenPack(schema.ZenPack):
         # Datapoint
         dp = ds.manage_addRRDDataPoint(self.dp_name)
         dp.rrdmin = 0
-        log.info('dp: {}'.format(dp.name()))
         # Graph Definition
         if hasattr(template.graphDefs, self.gd_name):
             template.manage_deleteGraphDefinitions([self.gd_name])
         graph = template.manage_addGraphDefinition(self.gd_name)
-        print(graph.__dict__)
         graph.units = 'pods'
         graph.miny = 0
         # Graph Datapoint
-        '''
-        dp_id = '{}_{}'.format(self.ds_name, self.dp_name)
-        template.manage_addDataSourcesToGraphs(ids=[self], graphIds=[self.gd_name])
-        '''
-        # dp_id = '{}_{}'.format(self.ds_name, self.dp_name)
         graph.manage_addDataPointGraphPoints(dpNames=[dp.name()], includeThresholds=False)
-
-        print(graph.__dict__)
-
-        '''
-        gdp = gd.createGraphPoint(DataPointGraphPoint, 'zenperfsql')
-        gdp.dpName = 'zenperfsql_%s' % dpn
-        gdp.format = format
-        gdp.stacked = stacked
-        '''
-
-        '''
-        component: ${here/id}
-        '''
-
-        '''
-        for gdn, dpn, stacked, format in self._gdmap:
-            dp = ds.manage_addRRDDataPoint(dpn)
-            if dpn in ['dataPoints']:
-                dp.rrdtype = 'DERIVE'
-                dp.rrdmin = 0
-            gd = getattr(pct.graphDefs, gdn, None)
-            if not gd: continue
-            if hasattr(gd.graphPoints, 'zenperfsql'): continue
-            gdp = gd.createGraphPoint(DataPointGraphPoint, 'zenperfsql')
-            gdp.dpName = 'zenperfsql_%s'%dpn
-            gdp.format = format
-            gdp.stacked = stacked
-        '''
         log.info('Completed customization K8sNamespace template')
+
+
+    def install(self, app):
+        self.namespace_custom(app)
         ZenPackBase.install(self, app)
 
     def upgrade(self, app):
-
-        print('***init***upgrade')
-        '''
-        if not hasattr(app.zport.dmd.Events.Status, 'PyDBAPI'):
-            app.zport.dmd.Events.createOrganizer("/Status/PyDBAPI")
-        pct = app.zport.dmd.Monitors.rrdTemplates.PerformanceConf
-        if hasattr(pct.datasources, 'zenperfsql'):
-            pct.manage_deleteRRDDataSources(['zenperfsql'])
-        ds = pct.manage_addRRDDataSource('zenperfsql', 'BuiltInDS.Built-In')
-        for gdn, dpn, stacked, format in self._gdmap:
-            dp = ds.manage_addRRDDataPoint(dpn)
-            if dpn in ['dataPoints']:
-                dp.rrdtype = 'DERIVE'
-                dp.rrdmin = 0
-            gd = getattr(pct.graphDefs, gdn, None)
-            if not gd: continue
-            if hasattr(gd.graphPoints, 'zenperfsql'): continue
-            gdp = gd.createGraphPoint(DataPointGraphPoint, 'zenperfsql')
-            gdp.dpName = 'zenperfsql_%s'%dpn
-            gdp.format = format
-            gdp.stacked = stacked
-        '''
+        self.namespace_custom(app)
         ZenPackBase.upgrade(self, app)
 
     def remove(self, app, leaveObjects=False):
