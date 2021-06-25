@@ -41,7 +41,7 @@ class Namespace(PythonDataSourcePlugin):
         below.
         """
         log.debug('Starting collect Namespace')
-        results = {ds.component:ds.params['pods'] for ds in config.datasources}
+        results = {ds.component:ds.params['pods'] for ds in config.datasources if ds.component}
 
         # This function MUST be a generator
         yield True
@@ -49,13 +49,15 @@ class Namespace(PythonDataSourcePlugin):
 
     def onSuccess(self, results, config):
         log.debug('Success - results is {}'.format(results))
-
         data = self.new_data()
-
+        total_pods = 0
         for ds in config.datasources:
             if not ds.component:
                 continue
-            data['values'][ds.component]['podscount'] = len(results[ds.component])
+            num_pods = len(results[ds.component])
+            data['values'][ds.component]['podscount'] = num_pods
+            total_pods += num_pods
+        data['values'][None]['totalpodscount'] = total_pods
         log.debug('onSuccess - data: {}'.format(data))
         return data
 
