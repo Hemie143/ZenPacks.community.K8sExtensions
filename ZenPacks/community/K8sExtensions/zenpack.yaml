@@ -1,2 +1,20 @@
 name: ZenPacks.community.K8sExtensions
 
+zProperties:
+  DEFAULTS:
+    category: K8sExtensions
+  zK8sLicNamespaceFilter:
+    type: lines
+    label: Regex Filter for counting pod licenses by namespaces
+    description:
+      Each namespace pattern should be written on a new line.
+      By default, all modeled pods will be counted.
+      Be careful that the modeled pods depends on zKubernetesNamespaceFilter.
+    default: [".*"]
+  zK8sLicPodFilter:
+    type: lines
+    label: Regex Filter for counting pod licenses by pods
+    description:
+      Each pod pattern should be written on a new line.
+      By default, all modeled pods will be counted.
+    default: [".*"]
