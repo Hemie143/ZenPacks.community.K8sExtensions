@@ -1,0 +1,80 @@
+<tal:block tal:define="
+    tabletitle string:Pods Report;
+    tableName string:pods_report;
+    tm here/ZenTableManager;
+    sts python:tm.setReqTableState;
+    tableState python:tm.getTableState(tableName, sortedSence='desc', sortedHeader='outputP');
+    clusterFilter python:sts(tableName, 'clusterFilter', '');
+
+    objects python:here.ReportServer.plugin('k8sPodsCount', here.REQUEST);
+    batch python:here.ZenTableManager.getBatch(tableName,objects,sortedHeader='cluster', sortedSence='asc');
+    exportFields python:['cluster', 'totalpods', 'licpods', ];
+    ">
+
+<!-- Make the report exportable to CSV -->
+<tal:block metal:use-macro="here/reportMacros/macros/exportableReport">
+<tal:block metal:fill-slot="report">
+
+<tal:block metal:use-macro="here/templates/macros/page1">
+<tal:block metal:fill-slot="breadCrumbPane">
+    <span metal:use-macro="here/miscmacros/macros/reportBreadCrumbsList"/>
+</tal:block>
+
+<tal:block metal:fill-slot="contentPane">
+
+<form id="organizerAvailabilityForm" method="submit">
+<tal:block tal:define="tabletitle string:Cisco Inventory Filtering">
+<tal:block metal:use-macro="here/zenuimacros/macros/zentable">
+<tal:block metal:fill-slot="zentablecontents">
+    <tr>
+        <td class="tableheader">Cluster Filter (regex):</td>
+        <td class="tablevalues">
+           <input class="tablevalues" name="clusterFilter"
+                  tal:attributes="value clusterFilter"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="tablevalues" colspan="1" style="padding:10px;">
+            <input class="navcontrol" type="Submit" value="Generate" name="generate" id="generate" />
+        </td>
+    </tr>
+</tal:block>
+</tal:block>
+</tal:block>
+
+<tal:block metal:use-macro="here/zenuimacros/macros/zentable">
+<tal:block metal:fill-slot="zentablecontents">
+    <tr>
+        <!-- Define Column Headers - Clickable for Sorting -->
+        <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'cluster','Cluster')"/>
+
+        <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'totalpods','Pods Total Count')"/>
+
+        <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'licpods','Pods Licensed Count')"/>
+
+    </tr>
+    <tal:block tal:repeat="r batch">
+        <!-- Define Per-Row Display -->
+        <tr tal:define="odd repeat/r/odd"
+            tal:attributes="class python:test(odd,'odd','even')">
+
+           <td tal:content="r/cluster"/>
+           <td tal:content="r/totalpods"/>
+           <td tal:content="r/licpods"/>
+        </tr>
+    </tal:block>
+    <tr>
+        <!-- Update colspan to match your columns -->
+        <td colspan="3" class="tableheader" align='center'>
+        <form metal:use-macro="here/zenTableNavigation/macros/navtool"/>
+        </td>
+    </tr>
+</tal:block>
+</tal:block>
+</form>
+
+</tal:block>
+</tal:block>
+</tal:block>
+</tal:block>
+</tal:block>
