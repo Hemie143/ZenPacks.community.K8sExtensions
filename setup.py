@@ -8,7 +8,7 @@ AUTHOR = "Laurent Hemeryck"
 LICENSE = "GPLv2+"
 NAMESPACE_PACKAGES = ['ZenPacks', 'ZenPacks.community']
 PACKAGES = ['ZenPacks', 'ZenPacks.community', 'ZenPacks.community.K8sExtensions']
-INSTALL_REQUIRES = ['ZenPacks.zenoss.ZenPackLib', 'ZenPacks.zenoss.Kubernetes', 'ZenPacks.zenoss.PythonCollector']
+INSTALL_REQUIRES = ['ZenPacks.zenoss.ZenPackLib', 'ZenPacks.zenoss.Kubernetes', 'ZenPacks.zenoss.PythonCollector', 'ZenPacks.zenoss.EnterpriseReports']
 COMPAT_ZENOSS_VERS = ""
 PREV_ZENPACK_NAME = ""
 # STOP_REPLACEMENTS
