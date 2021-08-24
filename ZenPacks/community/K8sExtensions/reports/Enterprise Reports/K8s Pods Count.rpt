@@ -1,6 +1,6 @@
 <tal:block tal:define="
-    tabletitle string:Pods Report;
-    tableName string:pods_report;
+    tabletitle string:Pods Count Report;
+    tableName string:pods_count_report;
     tm here/ZenTableManager;
     sts python:tm.setReqTableState;
     tableState python:tm.getTableState(tableName, sortedSence='desc', sortedHeader='outputP');

@@ -68,12 +68,15 @@ class Namespace(PythonDataSourcePlugin):
                 continue
             pods = results[ds.component]
             num_pods = len(pods)
+            ns_lic_pods = 0
             for pod in pods:
                 # Remove first 4 chars as the id is prefixed with "pod-"
                 r = re.match(pattern, pod[4:])
                 if r:
                     lic_pods += 1
+                    ns_lic_pods += 1
             data['values'][ds.component]['count_podscount'] = num_pods
+            data['values'][ds.component]['count_licpodscount'] = ns_lic_pods
             total_pods += num_pods
 
         data['values'][None]['count_totalpodscount'] = total_pods

@@ -1,6 +1,6 @@
 <tal:block tal:define="
-    tabletitle string:Pods Report;
-    tableName string:pods_report;
+    tabletitle string:Namespaces and Pods Report;
+    tableName string:ns_pods_report;
     tm here/ZenTableManager;
     sts python:tm.setReqTableState;
     tableState python:tm.getTableState(tableName, sortedSence='desc', sortedHeader='outputP');
@@ -8,7 +8,7 @@
 
     objects python:here.ReportServer.plugin('k8sNamespacesPods', here.REQUEST);
     batch python:here.ZenTableManager.getBatch(tableName,objects,sortedHeader='cluster', sortedSence='asc');
-    exportFields python:['cluster', 'namespaces', 'pods', ];
+    exportFields python:['cluster', 'namespaces', 'pods', 'lic' ];
     ">
 
 <!-- Make the report exportable to CSV -->
@@ -52,6 +52,8 @@
 
         <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'pods','Pods')"/>
 
+        <th tal:replace="structure python:here.ZenTableManager.getTableHeader(tableName,'lic','Licensed Pod')"/>
+
     </tr>
     <tal:block tal:repeat="r batch">
         <!-- Define Per-Row Display -->
@@ -61,11 +63,12 @@
            <td tal:content="r/cluster"/>
            <td tal:content="r/namespaces"/>
            <td tal:content="r/pods"/>
+           <td tal:content="r/lic"/>
         </tr>
     </tal:block>
     <tr>
         <!-- Update colspan to match your columns -->
-        <td colspan="3" class="tableheader" align='center'>
+        <td colspan="4" class="tableheader" align='center'>
         <form metal:use-macro="here/zenTableNavigation/macros/navtool"/>
         </td>
     </tr>

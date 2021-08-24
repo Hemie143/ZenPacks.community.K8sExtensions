@@ -17,12 +17,17 @@ class k8sNamespacesPods(object):
             if not r:
                 continue
 
+            licPodsFilter = cluster.zK8sLicPodFilter
+            pattern = re.compile("(" + ")|(".join(licPodsFilter) + ")")
             namespaces = cluster.k8sNamespaces
             for ns in namespaces.objectValuesGen():
                 for pod in ns.k8sPods.objectValuesGen():
+                    # Remove first 4 chars as the id is prefixed with "pod-"
+                    r = re.match(pattern, pod.titleOrId())
                     rows.append(Record(
                         cluster=clusterName,
                         namespaces=ns.titleOrId(),
                         pods=pod.titleOrId(),
+                        lic='Non-System' if r else 'System',
                     ))
         return rows

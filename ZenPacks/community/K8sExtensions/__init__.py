@@ -47,6 +47,7 @@ class ZenPack(schema.ZenPack):
                 'count': {
                     'datapoints': {
                         'podscount',
+                        'licpodscount',
                     },
                     'plugin_classname': 'ZenPacks.community.K8sExtensions.dsplugins.namespace.Namespace'
                 }
@@ -56,6 +57,9 @@ class ZenPack(schema.ZenPack):
                     'graphpoints': {
                         'Pods count': {
                             'dpName': 'count_podscount',
+                        },
+                        'Licensed Pods count': {
+                            'dpName': 'count_licpodscount',
                         },
                     }
                 }
