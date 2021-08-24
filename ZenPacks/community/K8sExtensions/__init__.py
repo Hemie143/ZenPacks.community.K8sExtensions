@@ -55,7 +55,7 @@ class ZenPack(schema.ZenPack):
             'graphs': {
                 'Pods Count': {
                     'graphpoints': {
-                        'Pods count': {
+                        'Total Pods count': {
                             'dpName': 'count_podscount',
                         },
                         'Licensed Pods count': {
@@ -91,10 +91,10 @@ class ZenPack(schema.ZenPack):
             'graphs': {
                 'Pods Total Count': {
                     'graphpoints': {
-                        'Total count': {
+                        'Total Pods count': {
                             'dpName': 'count_totalpodscount',
                         },
-                        'Total count for licenses': {
+                        'Total Licensed Pods count': {
                             'dpName': 'count_licpodscount',
                         }
                     }
